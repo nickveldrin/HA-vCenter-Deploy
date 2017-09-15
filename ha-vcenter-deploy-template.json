@@ -37,6 +37,8 @@
 		},
 		"datacenter": "HA-vCenter-Datacenter",
 		"cluster": "HA-vCenter-Cluster-1",
+		"standardswitch": true,
+		"vSwitch": "vSwitch1",
 		"distributedSwitch": "HA-vCenter-VDS",
 		"portgroup": "HA-vCenter-PortGroup"
 	},
