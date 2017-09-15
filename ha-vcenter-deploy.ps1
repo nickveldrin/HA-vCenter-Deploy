@@ -211,7 +211,10 @@ if($addSecondaryNic) {
 	
 	if((Get-VM -Server $pVCSA -Name $podConfig.active.name | Get-NetworkAdapter).count -le 1) {
 		Write-Log "Adding HA interface"
-		Get-VM -Server $pVCSA -Name $podConfig.active.name | New-NetworkAdapter -Portgroup (Get-VDPortgroup -Name $podConfig.target."ha-portgroup") -Type Vmxnet3 -StartConnected |  Out-File -Append -LiteralPath $verboseLogFile
+		if ($podconfig.active.standardswitch -eq "true") {
+			Get-VM -Server $pVCSA -Name $podconfig.active.name | New-NetworkAdapter -Portgroup ((Get-VM -Name $podconfig.active.name).VMHost | Get-VirtualSwitch -Name $podconfig.active.vswitch | Get-VirtualPortgroup -Name $podconfig.target."ha-portgroup") -type VMXNet3 -startconnected | out-file -append -literalpath $verboselogfile
+		} else {
+			Get-VM -Server $pVCSA -Name $podConfig.active.name | New-NetworkAdapter -Portgroup (Get-VDPortgroup -Name $podConfig.target."ha-portgroup") -Type Vmxnet3 -StartConnected |  Out-File -Append -LiteralPath $verboseLogFile
 	}
 	Close-VCSAConnection
 
